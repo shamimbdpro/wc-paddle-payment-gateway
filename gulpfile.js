@@ -51,7 +51,7 @@ function watchTask() {
 // Opens up the browser
 function browser(cb) {
     browserSync.init({
-        proxy: "http://localhost/woo/wp-admin/"
+        proxy: "https://personal.local"
     });
     cb();
 }

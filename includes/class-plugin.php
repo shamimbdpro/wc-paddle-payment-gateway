@@ -32,6 +32,27 @@ class Ppgw_Plugin {
 	protected $version;
 
 	/**
+	 * Instance of our settings object.
+	 *
+	 * @var Ppgw_Settings
+	 */
+	private $settings;
+	
+	/**
+	 * Instance of our checkout handler.
+	 *
+	 * @var Ppgw_Checkout
+	 */
+	private $checkout;
+	
+	/**
+	 * The gateway that handles the payments and the admin setup.
+	 *
+	 * @var Ppgw_Gateway
+	 */
+	private $gateway;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -120,6 +141,49 @@ class Ppgw_Plugin {
 
 		//Admin enqueue script
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
+
+		add_action('plugins_loaded', array($this, 'plugins_loaded'));
+	}
+
+	/**
+	 * Load and initialize everything after WC is loaded.
+	 *
+	 * @return void
+	 */
+	public function plugins_loaded() {
+		// Don't load extension if WooCommerce is not active
+		if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+			
+			include_once __DIR__ . '/class-api.php';
+			include_once __DIR__ . '/class-checkout.php';
+			include_once __DIR__ . '/class-gateway.php';
+			include_once __DIR__ . '/class-settings.php';
+
+			// Register the Paddle gateway with WC
+			add_filter('woocommerce_payment_gateways', array($this, 'register_gateway'));
+
+			// Add the checkout scripts and actions, if enabled
+			$this->settings = new Ppgw_Settings();
+			if($this->settings->get('enabled') == 'yes') {
+				
+				// Setup checkout object and register intercepts to render page content 
+				$this->checkout = new Ppgw_Checkout($this->settings);
+				$this->checkout->register_callbacks();
+				
+			}
+			
+			// Always setup the gateway as its needed to change admin settings
+			$this->gateway = new Ppgw_Gateway($this->settings);
+			$this->gateway->register_callbacks();
+		}
+	}
+	
+	/**
+	 * Callback called during plugin load to setup the Paddle_WC.
+	 */
+	public function register_gateway($methods) {
+		$methods[] = 'Ppgw_Gateway';
+		return $methods;
 	}
 
 	/**
