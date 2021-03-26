@@ -12,7 +12,8 @@ jQuery(document).ready(function(){
 		event.preventDefault();
 
 		// open paddle integration popup
-		window.open(integrationData.url, 'mywindow', 'location=no,status=0,scrollbars=0,width=800,height=600');
+		var url_to_open = jQuery('#woocommerce_paddle_enabled_sandbox').is(':checked') ? integrationData.sandbox_url : integrationData.url;
+		window.open(url_to_open, 'mywindow', 'location=no,status=0,scrollbars=0,width=800,height=600');
 
 		// handle message sent from popup
 		window.addEventListener('message', function(e) {

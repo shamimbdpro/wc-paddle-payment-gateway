@@ -1,6 +1,6 @@
 jQuery(function($) {
     
-    //Paddle.Environment.set('sandbox');
+    Paddle.Environment.set('sandbox');
 
     Paddle.Setup({
         vendor: parseInt(paddle_data.vendor),

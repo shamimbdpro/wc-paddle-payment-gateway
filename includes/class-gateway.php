@@ -31,7 +31,8 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		// Load settings (we haven't overriden, but must be called in ctor)
 		$this->init_settings();
 		
-		$this->enabled 			  = $this->paddle_settings->get('enabled');
+		$this->enabled         = $this->paddle_settings->get('enabled');
+		$this->enabled_sandbox = $this->paddle_settings->get('enabled_sandbox');
 		
 		if (is_admin() && $this->enabled == 'yes') {
 			if(!$this->paddle_settings->currency_supported) {
@@ -89,7 +90,12 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 			'app_description' => 'WooCommerce Paddle Payment Gateway Plugin. Site name: ' . get_bloginfo('name'),
 			'app_icon' => plugins_url('../assets/images/woo.png', __FILE__)
 		));
-		wp_localize_script('paddle-helpers', 'integrationData', array('url' => $integration_url));
+		$sandbox_integration_url = Ppgw_Settings::PADDLE_SANDBOX_URL . Ppgw_Settings::INTEGRATE_URL . '?' . http_build_query(array(
+			'app_name' => 'WooCommerce Paddle Payment Gateway',
+			'app_description' => 'WooCommerce Paddle Payment Gateway Plugin. Site name: ' . get_bloginfo('name'),
+			'app_icon' => plugins_url('../assets/images/woo.png', __FILE__)
+		));
+		wp_localize_script('paddle-helpers', 'integrationData', array('url' => $integration_url, 'sandbox_url' => $sandbox_integration_url));
 		if ('woocommerce_page_wc-settings' == get_current_screen()->id) {
 			wp_enqueue_script('paddle-helpers');
 		}
@@ -267,6 +273,13 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 				'type' => 'checkbox',
 				'label' => __('Enable', 'woocommerce'),
 				'default' => $this->enabled ? 'yes' : 'no'
+			),
+			'enabled_sandbox' => array(
+				'title' => __('Enable Sandbox Mode', 'woocommerce'),
+				'type' => 'checkbox',
+				'description' => __('This lets you test the paddle integration without spending actual money. Make sure you have an account in https://sandbox-vendors.paddle.com/', 'woocommerce'),
+				'label' => __('Enable', 'woocommerce'),
+				'default' => $this->enabled_sandbox ? 'yes' : 'no'
 			),
 			'title' => array(
 				'title' => __('Title', 'woocommerce'),

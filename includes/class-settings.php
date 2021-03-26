@@ -9,7 +9,8 @@ class Ppgw_Settings
 	const API_GENERATE_PAY_LINK_URL = 'api/2.0/product/generate_pay_link';
 	const API_GET_PUBLIC_KEY_URL = 'api/2.0/user/get_public_key';
 	const PADDLE_ROOT_URL = 'https://vendors.paddle.com/';
-	const PADDLE_CHECKOUT_ROOT_URL = 'https://checkout.paddle.com/';
+	const PADDLE_SANDBOX_URL = 'https://sandbox-vendors.paddle.com/';
+	const PADDLE_CHECKOUT_ROOT_URL = 'https://sandbox-checkout.paddle.com/';
 	const INTEGRATE_URL = 'vendor/external/integrate';
 	const SIGNUP_LINK = 'https://www.paddle.com/sell?utm_source=WooCommerce&utm_campaign=WooCommerce&utm_medium=WooCommerce&utm_term=sell';
 
@@ -83,6 +84,18 @@ class Ppgw_Settings
 	}
 
 	/**
+	 * Get the root url for api based on sandbox enabled or not
+	 *
+	 * @return string
+	 */
+	public function getPaddleRootURL() {
+		if( $this->get('enabled_sandbox') == 'yes' ) {
+			return self::PADDLE_SANDBOX_URL;
+		}
+		return self::PADDLE_ROOT_URL;
+	}
+
+	/**
 	 * Retrieves from paddle api and returns vendor_public_key
 	 * @param int $vendorId
 	 * @param string $vendorApiKey
@@ -94,7 +107,7 @@ class Ppgw_Settings
 		$data['vendor_id'] = $vendorId;
 		$data['vendor_auth_code'] = $vendorApiKey;
 
-		$apiCallResponse = wp_remote_get(self::PADDLE_ROOT_URL . self::API_GET_PUBLIC_KEY_URL, array(
+		$apiCallResponse = wp_remote_get($this->getPaddleRootURL() . self::API_GET_PUBLIC_KEY_URL, array(
 			'method' => 'POST',
 			'timeout' => 45,
 			'httpversion' => '1.1',

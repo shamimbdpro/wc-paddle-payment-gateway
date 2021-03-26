@@ -50,7 +50,8 @@ class Ppgw_API {
 		}
 		
 		// Get pay link from Paddle API
-		$post_url = Ppgw_Settings::PADDLE_ROOT_URL . Ppgw_Settings::API_GENERATE_PAY_LINK_URL;
+		$post_url_root = Ppgw_Settings::instance()->getPaddleRootURL();
+		$post_url = $post_url_root . Ppgw_Settings::API_GENERATE_PAY_LINK_URL;
 		$api_start_time = microtime(true);
 		$api_call_response = wp_remote_post($post_url, array(
 			'method' => 'POST',
