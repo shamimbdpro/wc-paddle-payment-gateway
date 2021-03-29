@@ -213,8 +213,7 @@ class Ppgw_Plugin {
 	 * @return void
 	 */
 	public function admin_scripts() {
-		wp_enqueue_script( 'paddle-woocommerce-admin', PPGW_ASSETS_URL . 'js/admin.min.js', array( 'jquery' ), null, true );
-		wp_enqueue_style( 'paddle-woocommerce-admin', PPGW_ASSETS_URL . 'css/admin.min.css', array(), null );
+		
 	}
 
 }
