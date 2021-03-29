@@ -18,8 +18,8 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		$this->paddle_settings    = isset($settings) ? $settings : new Ppgw_Settings();
 
 		$this->id                 = 'paddle';
-		$this->method_title       = 'Paddle.com Payment Gateway';
-		$this->method_description = 'Allow customers to securely checkout with credit cards or PayPal';
+		$this->method_title       = __( 'Paddle.com Payment Gateway', 'paddle-woocommerce' );
+		$this->method_description = __( 'Allow customers to securely checkout with credit cards or PayPal', 'paddle-woocommerce' );
 		$this->title              = $this->paddle_settings->get('title');
 		$this->description        = $this->paddle_settings->get('description');
 		$this->icon               = apply_filters('wc_paddle_icon', '');
@@ -38,8 +38,8 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 			if(!$this->paddle_settings->currency_supported) {
 				// Inform users if they are not able to use this plugin due to currency
 				WC_Admin_Settings::add_error(
-					'Paddle does not support your store currency. ' .
-					"Your store currency is " . get_woocommerce_currency() .", and we only support " . implode(', ', $this->paddle_settings->supported_currencies)
+					__( 'Paddle does not support your store currency. ', 'paddle-woocommerce' ) .
+					__( "Your store currency is ", 'paddle-woocommerce' ) . get_woocommerce_currency() . __( ", and we only support ", 'paddle-woocommerce' ) . implode(', ', $this->paddle_settings->supported_currencies)
 				);
 			}
 			// Check we are setup in admin, and display message if not connected
@@ -86,13 +86,13 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 	public function on_admin_enqueue_scripts() {
 		wp_register_script('paddle-helpers', PPGW_ASSETS_URL . 'js/paddle-helpers.js', array('jquery'));
 		$integration_url = Ppgw_Settings::PADDLE_ROOT_URL . Ppgw_Settings::INTEGRATE_URL . '?' . http_build_query(array(
-			'app_name' => 'WooCommerce Paddle Payment Gateway',
-			'app_description' => 'WooCommerce Paddle Payment Gateway Plugin. Site name: ' . get_bloginfo('name'),
+			'app_name' => __( 'Paddle Payment Gateway for WooCommerce', 'paddle-woocommerce' ),
+			'app_description' => __( 'Paddle Payment Gateway for WooCommerce Plugin. Site name: ', 'paddle-woocommerce' ) . get_bloginfo('name'),
 			'app_icon' => plugins_url('../assets/images/woo.png', __FILE__)
 		));
 		$sandbox_integration_url = Ppgw_Settings::PADDLE_SANDBOX_URL . Ppgw_Settings::INTEGRATE_URL . '?' . http_build_query(array(
-			'app_name' => 'WooCommerce Paddle Payment Gateway',
-			'app_description' => 'WooCommerce Paddle Payment Gateway Plugin. Site name: ' . get_bloginfo('name'),
+			'app_name' => __( 'Paddle Payment Gateway for WooCommerce', 'paddle-woocommerce' ),
+			'app_description' => __( 'Paddle Payment Gateway for WooCommerce Plugin. Site name: ', 'paddle-woocommerce' ) . get_bloginfo('name'),
 			'app_icon' => plugins_url('../assets/images/woo.png', __FILE__)
 		));
 		wp_localize_script('paddle-helpers', 'integrationData', array('url' => $integration_url, 'sandbox_url' => $sandbox_integration_url));
@@ -123,7 +123,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		static $added = false;
 		if(!$this->paddle_settings->is_connected) {
 			if($added) return;
-			WC_Admin_Settings::add_error("You must connect to paddle before the paddle checkout plugin can be used");
+			WC_Admin_Settings::add_error(__( "You must connect to paddle before the paddle checkout plugin can be used", 'paddle-woocommerce' ));
 			$added = true;
 		}
 	}
@@ -181,13 +181,13 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 					status_header(200);
 					exit;
 				} else {
-					error_log('Paddle error. Unable to complete payment - order ' . $order_id . ' does not exist');
+					error_log(__( 'Paddle error. Unable to complete payment - order ', 'paddle-woocommerce' ) . $order_id . __( ' does not exist', 'paddle-woocommerce' ));
 				}
 			} else {
-				error_log('Paddle error. Unable to complete payment - order_id is not integer. Got \'' . $order_id . '\'.');
+				error_log(__( 'Paddle error. Unable to complete payment - order_id is not integer. Got \'', 'paddle-woocommerce' ) . $order_id . '\'.');
 			}
 		} else {
-			error_log('Paddle error. Unable to verify webhook callback - bad signature.');
+			error_log(__( 'Paddle error. Unable to verify webhook callback - bad signature.', 'paddle-woocommerce' ));
 		}
 		status_header(500);
 		exit;
@@ -198,7 +198,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 	 */
 	public function display_errors() {
 		foreach ($this->errors as $k => $error) {
-			WC_Admin_Settings::add_error("Unable to save due to error: " . $error);
+			WC_Admin_Settings::add_error(__( "Unable to save due to error: ", 'paddle-woocommerce' ) . $error);
 			unset($this->errors[$k]);
 		}
 	}
@@ -235,7 +235,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		if($this->get_option($key) == $image_url && $this->enabled == 'yes') return $image_url;
 
 		if (!$this->url_valid($image_url)) {
-			$this->errors[] = 'Product Icon url is not valid';
+			$this->errors[] = __( 'Product Icon url is not valid', 'paddle-woocommerce' );
 		} else if (substr($image_url, 0, 5) != 'https') {
 			//confirmed that base url is valid; now need to make it secure
 			$new_url = 'https' . substr($image_url, 4);
@@ -245,7 +245,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 				$key = $this->getPaddleVendorKey();
 				openssl_public_encrypt($image_url, $urlcode, $key);
 				$new_url = self::IMAGE_BOUNCE_PROXY_URL . $vendor_id . '/' . str_replace(array('+', '/'), array('-', '_'), base64_encode($urlcode));
-				WC_Admin_Settings::add_message("Product Icon URL has been converted to use a secure proxy");
+				WC_Admin_Settings::add_message(__( "Product Icon URL has been converted to use a secure proxy", 'paddle-woocommerce' ));
 			}
 			$image_url = $new_url;
 		}
@@ -262,81 +262,81 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		
 		if ($this->paddle_settings->is_connected) {
 			$connection_button = '<p style=\'color:green\'>Your paddle account has already been connected</p>' .
-				'<a class=\'button-primary open_paddle_popup\'>Reconnect your Paddle Account</a>';
+				'<a class=\'button-primary open_paddle_popup\'>' . __( 'Reconnect your Paddle Account', 'paddle-woocommerce' ) . '</a>';
 		} else {
-			$connection_button = '<a class=\'button-primary open_paddle_popup\'>Connect your Paddle Account</a>';
+			$connection_button = '<a class=\'button-primary open_paddle_popup\'>' . __( 'Connect your Paddle Account', 'paddle-woocommerce' ) . '</a>';
 		}
 
 		$this->form_fields = array(
 			'enabled' => array(
-				'title' => __('Enable/Disable', 'woocommerce'),
+				'title' => __('Enable/Disable', 'paddle-woocommerce'),
 				'type' => 'checkbox',
-				'label' => __('Enable', 'woocommerce'),
+				'label' => __('Enable', 'paddle-woocommerce'),
 				'default' => $this->enabled ? 'yes' : 'no'
 			),
 			'enabled_sandbox' => array(
-				'title' => __('Enable Sandbox Mode', 'woocommerce'),
+				'title' => __('Enable Sandbox Mode', 'paddle-woocommerce'),
 				'type' => 'checkbox',
-				'description' => __('This lets you test the paddle integration without spending actual money. Make sure you have an account in https://sandbox-vendors.paddle.com/', 'woocommerce'),
-				'label' => __('Enable', 'woocommerce'),
+				'description' => __('This lets you test the paddle integration without spending actual money. Make sure you have an account in https://sandbox-vendors.paddle.com/', 'paddle-woocommerce'),
+				'label' => __('Enable', 'paddle-woocommerce'),
 				'default' => $this->enabled_sandbox ? 'yes' : 'no'
 			),
 			'title' => array(
-				'title' => __('Title', 'woocommerce'),
+				'title' => __('Title', 'paddle-woocommerce'),
 				'type' => 'text',
-				'description' => __('This controls the title which the user sees during checkout.', 'woocommerce'),
-				'default' => __('Paddle', 'woocommerce')
+				'description' => __('This controls the title which the user sees during checkout.', 'paddle-woocommerce'),
+				'default' => __('Paddle', 'paddle-woocommerce')
 			),
 			'description' => array(
-				'title' => __('Customer Message', 'woocommerce'),
+				'title' => __('Customer Message', 'paddle-woocommerce'),
 				'type' => 'textarea',
-				'description' => __('This controls the description which the user sees during checkout.', 'woocommerce'),
-				'default' => __('Pay using Visa, Mastercard, Amex or PayPal via Paddle', 'woocommerce')
+				'description' => __('This controls the description which the user sees during checkout.', 'paddle-woocommerce'),
+				'default' => __('Pay using Visa, Mastercard, Amex or PayPal via Paddle', 'paddle-woocommerce')
 			),
 			'paddle_showlink' => array(
-				'title' => 'Vendor Account',
-				'content' => $connection_button . '<br /><p class = "description"><a href="#!" id=\'toggleVendorAccountEntry\'>Click here to enter your account details manually</a></p>',
+				'title' => __( 'Vendor Account', 'paddle-woocommerce' ),
+				'content' => $connection_button . '<br /><p class = "description"><a href="#!" id=\'toggleVendorAccountEntry\'>' . __( 'Click here to enter your account details manually', 'paddle-woocommerce' ) . '</a></p>',
 				'type' => 'raw',
 				'default' => ''
 			),
 			'paddle_vendor_id' => array(
-				'title' => __('Paddle Vendor ID', 'woocommerce'),
+				'title' => __('Paddle Vendor ID', 'paddle-woocommerce'),
 				'type' => 'text',
-				'description' => __('<a href="#" class="open_paddle_popup">Click here to integrate Paddle account.</a>', 'woocommerce'),
+				'description' => '<a href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'paddle-woocommerce') . '</a>',
 				'default' => '',
 				'row_attributes' => array('style' => 'display:none')
 			),
 			'paddle_api_key' => array(
-				'title' => __('Paddle API Key', 'woocommerce'),
+				'title' => __('Paddle API Key', 'paddle-woocommerce'),
 				'type' => 'textarea',
-				'description' => __('<a href="#" class="open_paddle_popup">Click here to integrate Paddle account.</a>', 'woocommerce'),
+				'description' => '< href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'paddle-woocommerce') . '</a>',
 				'default' => '',
 				'row_attributes' => array('style' => 'display:none')
 			),
 			'product_name' => array(
-				'title' => __('Product Name'),
-				'description' => __('The name of the product to use in the paddle checkout'),
+				'title' => __('Product Name', 'paddle-woocommerce'),
+				'description' => __('The name of the product to use in the paddle checkout', 'paddle-woocommerce'),
 				'type' => 'text',
 				'default' => get_bloginfo('name') . ' Checkout'
 			),
 			'product_icon' => array(
-				'title' => __('Product Icon'),
-				'description' => __('The url of the icon to show next to the product name during checkout'),
+				'title' => __('Product Icon', 'paddle-woocommerce'),
+				'description' => __('The url of the icon to show next to the product name during checkout', 'paddle-woocommerce'),
 				'type' => 'text',
 				'default' => 'https://s3.amazonaws.com/paddle/default/default_product_icon.png'
 			),
 			'send_names' => array(
-				'title' => __('Send Product Names'),
-				'description' => __('Should the names of the product(s) in the cart be shown on the checkout?'),
+				'title' => __('Send Product Names', 'paddle-woocommerce'),
+				'description' => __('Should the names of the product(s) in the cart be shown on the checkout?', 'paddle-woocommerce'),
 				'type' => 'checkbox',
-				'label' => __('Send Names', 'woocommerce'),
+				'label' => __('Send Names', 'paddle-woocommerce'),
 				'default' => $this->enabled ? 'yes' : 'no'
 			),
 			'vat_included_in_price' => array(
-				'title' => __('VAT Included In Price?'),
-				'description' => __('This must match your Paddle account settings under VAT/Taxes'),
+				'title' => __('VAT Included In Price?', 'paddle-woocommerce'),
+				'description' => __('This must match your Paddle account settings under VAT/Taxes', 'paddle-woocommerce'),
 				'type' => 'checkbox',
-				'label' => __('Prices Include VAT', 'woocommerce'),
+				'label' => __('Prices Include VAT', 'paddle-woocommerce'),
 				'default' => 'yes'
 			)
 		);

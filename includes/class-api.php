@@ -66,11 +66,11 @@ class Ppgw_API {
 		// Pass back to AJAX response unless error
 		if (is_wp_error($api_call_response)) {
 			// We failed to get a response
-			wc_add_notice( 'Something went wrong getting checkout url. Unable to get API response.', 'error');
-			error_log('Paddle error. Unable to get API response. Method: ' . __METHOD__ . ' Error message: ' . $api_call_response->get_error_message());
+			wc_add_notice( __( 'Something went wrong getting checkout url. Unable to get API response.', 'paddle-woocommerce' ), 'error');
+			error_log(__( 'Paddle error. Unable to get API response. Method: ', 'paddle-woocommerce' ) . __METHOD__ . __( ' Error message: ', 'paddle-woocommerce' ) . $api_call_response->get_error_message());
 			return json_encode(array(
 				'result' => 'failure',
-				'errors' => array('Something went wrong. Unable to get API response.')
+				'errors' => array(__( 'Something went wrong. Unable to get API response.', 'paddle-woocommerce' ))
 			));
 		} else {
 			$api_response = json_decode($api_call_response['body']);
@@ -87,15 +87,15 @@ class Ppgw_API {
 				));
 			} else {
 				// We got a response, but it was an error response
-				wc_add_notice('Something went wrong getting checkout url. Check if gateway is integrated.', 'error');
+				wc_add_notice(__( 'Something went wrong getting checkout url. Check if gateway is integrated.', 'paddle-woocommerce' ), 'error');
 				if (is_object($api_response)) {
-					error_log('Paddle error. Error response from API. Method: ' . __METHOD__ . ' Errors: ' . print_r($api_response->error, true));
+					error_log(__( 'Paddle error. Error response from API. Method: ', 'paddle-woocommerce' ) . __METHOD__ . __( ' Errors: ', 'paddle-woocommerce' ) . print_r($api_response->error, true));
 				} else {
-					error_log('Paddle error. Error response from API. Method: ' . __METHOD__ . ' Response: ' . print_r($api_call_response, true));
+					error_log(__( 'Paddle error. Error response from API. Method: ', 'paddle-woocommerce' ) . __METHOD__ . __( ' Response: ', 'paddle-woocommerce' ) . print_r($api_call_response, true));
 				}
 				return json_encode(array(
 					'result' => 'failure',
-					'errors' => array('Something went wrong. Check if Paddle account is properly integrated.')
+					'errors' => array(__( 'Something went wrong. Check if Paddle account is properly integrated.', 'paddle-woocommerce' ))
 				));
 			}
 		}
@@ -133,7 +133,7 @@ class Ppgw_API {
 		// Log error if vendor_public_key is not set
 		$vendor_public_key = Ppgw_Settings::instance()->getPaddleVendorKey();
 		if (empty($vendor_public_key)) {
-            error_log('Paddle error. Unable to verify webhook callback - vendor_public_key is not set.');
+            error_log(__( 'Paddle error. Unable to verify webhook callback - vendor_public_key is not set.', 'paddle-woocommerce' ));
 			return -1;
 		}
 

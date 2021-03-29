@@ -61,7 +61,8 @@ class Ppgw_Checkout {
 		$endpoint = is_wc_endpoint_url('order-pay') ? 'paddle_checkout_pay' : 'paddle_checkout';
 		$paddle_data = array(
 			'order_url' => $this->get_ajax_endpoint_path($endpoint),
-			'vendor' => $this->settings->get('paddle_vendor_id')
+			'vendor' => $this->settings->get('paddle_vendor_id'),
+			'unable_process_order' => __( "We were unable to process your order, please try again in a few minutes.", 'paddle-woocommerce' )
 		);
 
 		wp_localize_script('paddle-engine', 'paddle_data', $paddle_data);
@@ -81,7 +82,7 @@ class Ppgw_Checkout {
 	 */
 	public function on_ajax_process_checkout_pay() {	
 		if (!WC()->session->order_awaiting_payment) {
-			wc_add_notice('We were unable to process your order, please try again.', 'error');
+			wc_add_notice(__( 'We were unable to process your order, please try again.', 'paddle-woocommerce' ), 'error');
 			ob_start();
 			wc_print_notices();
 			$messages = ob_get_contents();
@@ -89,7 +90,7 @@ class Ppgw_Checkout {
 			echo json_encode(array(
 				'result' => 'failure',
 				'messages' => $messages,
-				'errors' => array('We were unable to process your order, please try again.')
+				'errors' => array(__( 'We were unable to process your order, please try again.', 'paddle-woocommerce' ))
 			));
 			exit;
 		}

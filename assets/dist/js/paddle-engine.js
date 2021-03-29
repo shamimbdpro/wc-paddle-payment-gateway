@@ -66,7 +66,7 @@ jQuery(function($) {
             },
             error: function (jqxhr, status) {
                 // We got a 500 or something if we hit here. Shouldn't normally happen
-                alert("We were unable to process your order, please try again in a few minutes.");
+                alert();
             }
         });
     };
