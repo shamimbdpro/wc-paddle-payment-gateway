@@ -143,6 +143,27 @@ class Ppgw_Plugin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
+
+		add_filter( 'auto_update_plugin', array($this, 'auto_update_this_plugin'), 10, 2 );
+	}
+
+	/**
+	 * Enable auto update.
+	 *
+	 * @param mixed $update
+	 * @param mixed $item
+	 * @return mixed
+	 */
+	public function auto_update_this_plugin ( $update, $item ) {
+		// Array of plugin slugs to always auto-update
+		$plugins = array (
+			$this->plugin_name
+		);
+		if ( in_array( $item->slug, $plugins ) ) {
+			return true;
+		} else {
+			return $update;
+		}
 	}
 
 	/**
