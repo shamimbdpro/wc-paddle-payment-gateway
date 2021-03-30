@@ -67,7 +67,7 @@ class Ppgw_Plugin {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'paddle-woocommerce';
+		$this->plugin_name = 'wc-paddle-payment-gateway';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -116,7 +116,7 @@ class Ppgw_Plugin {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'paddle-woocommerce',
+			'wc-paddle-payment-gateway',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

@@ -10,18 +10,17 @@
  *
  * @link              https://divdojo.com
  * @since             1.0.0
- * @package           Paddle_Woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       Paddle Payment Gateway for WooCommerce
- * Plugin URI:        https://divdojo.com/paddle-woocommerce
+ * Plugin Name:       Payment Gateway for Paddle on WooCommerce
+ * Plugin URI:        https://divdojo.com/wc-paddle-payment-gateway
  * Description:       Paddle.com Payment Gateway Plugin for WooCommerce
  * Version:           1.0.0
  * Author:            DivDojo
  * Author URI:        https://divdojo.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       paddle-woocommerce
+ * Text Domain:       wc-paddle-payment-gateway
  * Domain Path:       /languages
  */
 

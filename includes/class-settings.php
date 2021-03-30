@@ -118,8 +118,8 @@ class Ppgw_Settings
 		);
 
 		if (is_wp_error($apiCallResponse)) {
-			echo esc_html__( 'Something went wrong. Unable to get API response.', 'paddle-woocommerce' );
-			error_log( __( 'Paddle error. Unable to get API response. Method: ', 'paddle-woocommerce' ) . __METHOD__ . __( ' Error message: ', 'paddle-woocommerce' ) . $apiCallResponse->get_error_message());
+			echo esc_html__( 'Something went wrong. Unable to get API response.', 'wc-paddle-payment-gateway' );
+			error_log( __( 'Paddle error. Unable to get API response. Method: ', 'wc-paddle-payment-gateway' ) . __METHOD__ . __( ' Error message: ', 'wc-paddle-payment-gateway' ) . $apiCallResponse->get_error_message());
 			exit;
 		} else {
 			$oApiResponse = json_decode($apiCallResponse['body']);
@@ -127,8 +127,8 @@ class Ppgw_Settings
 			if ($oApiResponse->success === true) {
 				return $oApiResponse->response->public_key;
 			} else {
-				echo esc_html__( 'Something went wrong. Make sure that Paddle Vendor Id and Paddle Api Key are correct.', 'paddle-woocommerce' );
-				error_log(__( 'Paddle error. Error response from API. Errors: ', 'paddle-woocommerce' ) . print_r($oApiResponse->error, true));
+				echo esc_html__( 'Something went wrong. Make sure that Paddle Vendor Id and Paddle Api Key are correct.', 'wc-paddle-payment-gateway' );
+				error_log(__( 'Paddle error. Error response from API. Errors: ', 'wc-paddle-payment-gateway' ) . print_r($oApiResponse->error, true));
 				exit;
 			}
 		}
