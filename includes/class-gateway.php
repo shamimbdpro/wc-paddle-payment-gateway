@@ -173,7 +173,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 	 */
 	public function on_paddle_payment_webhook_response() {
 		if (Ppgw_API::check_webhook_signature()) {
-			$order_id = $_GET['order_id'];
+			$order_id = sanitize_text_field( $_GET['order_id'] );
 			if (is_numeric($order_id) && (int) $order_id == $order_id) {
 				$order = new WC_Order($order_id);
 				if (is_object($order) && $order instanceof WC_Order) {
@@ -207,14 +207,12 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 	 * Check that the given url leads to an actual file
 	 */
 	protected function url_valid($url) {
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_NOBODY, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-		curl_exec($curl);
-		$info = curl_getinfo($curl);
-		curl_close($curl);
-		return $info['http_code'] == 200;
+		$response = wp_remote_get( $url, array(
+			'sslverify' => false,
+		));
+		$http_code = wp_remote_retrieve_response_code( $response );
+
+		return $http_code == 200;
 	}
 
 	/**
@@ -229,7 +227,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 		if (!isset($_POST[$this->plugin_id . $this->id . '_' . $key]) || empty($_POST[$this->plugin_id . $this->id . '_' . $key])) {
 			return '';
 		}
-		$image_url = $_POST[$this->plugin_id . $this->id . '_' . $key];
+		$image_url = esc_url_raw( $_POST[$this->plugin_id . $this->id . '_' . $key] );
 
 		//If the new url is the same as the old one, AND we know it is valid already (because we are enabled), then skip validation
 		if($this->get_option($key) == $image_url && $this->enabled == 'yes') return $image_url;
@@ -323,7 +321,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 				'title' => __('Product Icon', 'wc-paddle-payment-gateway'),
 				'description' => __('The url of the icon to show next to the product name during checkout', 'wc-paddle-payment-gateway'),
 				'type' => 'text',
-				'default' => 'https://s3.amazonaws.com/paddle/default/default_product_icon.png'
+				'default' => PPGW_ASSETS_URL . 'img/default_product_icon.png'
 			),
 			'send_names' => array(
 				'title' => __('Send Product Names', 'wc-paddle-payment-gateway'),

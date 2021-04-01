@@ -140,6 +140,9 @@ class Ppgw_API {
 		// Copy get input to separate variable to not modify superglobal array
 		$webhook_data = $_POST;
 		foreach ($webhook_data as $k => $v) {
+			// Sanitize all the key and values of array
+			$k = sanitize_text_field( $k );
+			$v = sanitize_text_field( $v );
 			$webhook_data[$k] = stripslashes($v);
 		}
 

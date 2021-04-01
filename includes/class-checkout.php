@@ -52,7 +52,7 @@ class Ppgw_Checkout {
 	 */
 	public function on_wp_enqueue_scripts() {
 		// Inject standard Paddle checkout JS
-		wp_enqueue_script('paddle-checkout', 'https://cdn.paddle.com/paddle/paddle.js');
+		wp_enqueue_script('paddle-checkout', PPGW_ASSETS_URL . 'js/paddle.js');
 		
 		// Inject our bootstrap JS to intercept the WC button press and invoke standard JS
 		wp_register_script('paddle-engine', PPGW_ASSETS_URL . 'js/paddle-engine.js', array('jquery'), null);
@@ -111,10 +111,10 @@ class Ppgw_Checkout {
 	private function get_ajax_endpoint_path($endpoint) {
 		if(version_compare(WOOCOMMERCE_VERSION, '2.4.0', '>=')) {
 			// WC AJAX callback (Added in 2.4.0)
-			$url = parse_url($_SERVER['REQUEST_URI']);
-			parse_str(isset($url['query']) ? $url['query'] : '', $query);
+			$url_arr = parse_url($_SERVER['REQUEST_URI']);
+			parse_str(isset($url_arr['query']) ? $url_arr['query'] : '', $query);
 			$query['wc-ajax'] = $endpoint;
-			$order_url = $url['path'].'?'.http_build_query($query);
+			$order_url = $url_arr['path'].'?'.http_build_query($query);
 		} else {
 			// Older callback (not sure we should care about supporting this old)
 			$order_url = admin_url('admin-ajax.php?action='.$endpoint);
