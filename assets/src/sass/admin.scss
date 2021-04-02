@@ -1,0 +1,26 @@
+// Notice styles
+.paddle-notice-wrapper {
+    padding: 7px;
+
+    .paddle-track-list {
+        display: none;
+        margin-top: 15px;
+
+        &.visible {
+            display: block;
+        }
+    }
+    
+    form {
+
+        .non-sensitive {
+            text-decoration: underline;
+            color: #135e96;
+            cursor: pointer;
+        }
+
+        button {
+            vertical-align: baseline !important;
+        }
+    }
+}

@@ -129,7 +129,7 @@ class Ppgw_Plugin {
 	 * @return void
 	 */
 	private function load_dependencies() {
-
+		include __DIR__ . '/class-usage.php';
 	}
 
 	/**
@@ -145,6 +145,9 @@ class Ppgw_Plugin {
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
 
 		add_filter( 'auto_update_plugin', array($this, 'auto_update_this_plugin'), 10, 2 );
+
+		// Initialize usage class
+		new Ppgw_Usage();
 	}
 
 	/**
@@ -213,7 +216,8 @@ class Ppgw_Plugin {
 	 * @return void
 	 */
 	public function admin_scripts() {
-		
+		wp_enqueue_style( 'wc-paddle-admin', PPGW_ASSETS_URL . 'css/admin.min.css', array(), null );
+		wp_enqueue_script( 'wc-paddle-admin', PPGW_ASSETS_URL . 'js/admin.min.js', array('jquery'), null, true );
 	}
 
 }

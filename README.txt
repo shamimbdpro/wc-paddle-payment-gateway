@@ -4,7 +4,7 @@ Donate link: https://www.facebook.com/disismehbub
 Tags: paddle,payment gateway,woocommerce
 Requires at least: 4.2
 Tested up to: 5.7
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,9 @@ Plugin inspired & started from [this repo](https://github.com/hasinhayder/paddle
 Active development and contribute to [this repo](https://github.com/MehbubRashid/wc-paddle-payment-gateway)
 
 == Changelog ==
+
+= 1.0.1 =
+* Better usage tracking.
 
 = 1.0.0 =
 * First release.
