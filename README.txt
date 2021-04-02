@@ -39,6 +39,7 @@ Active development and contribute to [this repo](https://github.com/MehbubRashid
 == Changelog ==
 
 = 1.0.1 =
+* Sandbox reconnect helper text added.
 * Better usage tracking.
 
 = 1.0.0 =

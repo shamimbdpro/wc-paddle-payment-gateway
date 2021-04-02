@@ -267,75 +267,75 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 
 		$this->form_fields = array(
 			'enabled' => array(
-				'title' => __('Enable/Disable', 'wc-paddle-payment-gateway'),
-				'type' => 'checkbox',
-				'label' => __('Enable', 'wc-paddle-payment-gateway'),
+				'title'   => __('Enable/Disable', 'wc-paddle-payment-gateway'),
+				'type'    => 'checkbox',
+				'label'   => __('Enable', 'wc-paddle-payment-gateway'),
 				'default' => $this->enabled ? 'yes' : 'no'
 			),
 			'enabled_sandbox' => array(
-				'title' => __('Enable Sandbox Mode', 'wc-paddle-payment-gateway'),
-				'type' => 'checkbox',
+				'title'       => __('Enable Sandbox Mode', 'wc-paddle-payment-gateway'),
+				'type'        => 'checkbox',
 				'description' => __('This lets you test the paddle integration without spending actual money. Make sure you have an account in https://sandbox-vendors.paddle.com/', 'wc-paddle-payment-gateway'),
-				'label' => __('Enable', 'wc-paddle-payment-gateway'),
-				'default' => $this->enabled_sandbox ? 'yes' : 'no'
+				'label'       => __('Enable (After enabling/disabling this, You need to connect again in the vendor account section below.)', 'wc-paddle-payment-gateway'),
+				'default'     => $this->enabled_sandbox ? 'yes' : 'no'
 			),
 			'title' => array(
-				'title' => __('Title', 'wc-paddle-payment-gateway'),
-				'type' => 'text',
+				'title'       => __('Title', 'wc-paddle-payment-gateway'),
+				'type'        => 'text',
 				'description' => __('This controls the title which the user sees during checkout.', 'wc-paddle-payment-gateway'),
-				'default' => __('Paddle', 'wc-paddle-payment-gateway')
+				'default'     => __('Paddle', 'wc-paddle-payment-gateway')
 			),
 			'description' => array(
-				'title' => __('Customer Message', 'wc-paddle-payment-gateway'),
-				'type' => 'textarea',
+				'title'       => __('Customer Message', 'wc-paddle-payment-gateway'),
+				'type'        => 'textarea',
 				'description' => __('This controls the description which the user sees during checkout.', 'wc-paddle-payment-gateway'),
-				'default' => __('Pay using Visa, Mastercard, Amex or PayPal via Paddle', 'wc-paddle-payment-gateway')
+				'default'     => __('Pay using Visa, Mastercard, Amex or PayPal via Paddle', 'wc-paddle-payment-gateway')
 			),
 			'paddle_showlink' => array(
-				'title' => __( 'Vendor Account', 'wc-paddle-payment-gateway' ),
+				'title'   => __( 'Vendor Account', 'wc-paddle-payment-gateway' ),
 				'content' => $connection_button . '<br /><p class = "description"><a href="#!" id=\'toggleVendorAccountEntry\'>' . __( 'Click here to enter your account details manually', 'wc-paddle-payment-gateway' ) . '</a></p>',
-				'type' => 'raw',
+				'type'    => 'raw',
 				'default' => ''
 			),
 			'paddle_vendor_id' => array(
-				'title' => __('Paddle Vendor ID', 'wc-paddle-payment-gateway'),
-				'type' => 'text',
-				'description' => '<a href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'wc-paddle-payment-gateway') . '</a>',
-				'default' => '',
+				'title'          => __('Paddle Vendor ID', 'wc-paddle-payment-gateway'),
+				'type'           => 'text',
+				'description'    => '<a href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'wc-paddle-payment-gateway') . '</a>',
+				'default'        => '',
 				'row_attributes' => array('style' => 'display:none')
 			),
 			'paddle_api_key' => array(
-				'title' => __('Paddle API Key', 'wc-paddle-payment-gateway'),
-				'type' => 'textarea',
-				'description' => '< href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'wc-paddle-payment-gateway') . '</a>',
-				'default' => '',
+				'title'          => __('Paddle API Key', 'wc-paddle-payment-gateway'),
+				'type'           => 'textarea',
+				'description'    => '< href="#" class="open_paddle_popup">' . __('Click here to integrate Paddle account.', 'wc-paddle-payment-gateway') . '</a>',
+				'default'        => '',
 				'row_attributes' => array('style' => 'display:none')
 			),
 			'product_name' => array(
-				'title' => __('Product Name', 'wc-paddle-payment-gateway'),
+				'title'       => __('Product Name', 'wc-paddle-payment-gateway'),
 				'description' => __('The name of the product to use in the paddle checkout', 'wc-paddle-payment-gateway'),
-				'type' => 'text',
-				'default' => get_bloginfo('name') . ' Checkout'
+				'type'        => 'text',
+				'default'     => get_bloginfo('name') . ' Checkout'
 			),
 			'product_icon' => array(
-				'title' => __('Product Icon', 'wc-paddle-payment-gateway'),
+				'title'       => __('Product Icon', 'wc-paddle-payment-gateway'),
 				'description' => __('The url of the icon to show next to the product name during checkout', 'wc-paddle-payment-gateway'),
-				'type' => 'text',
-				'default' => PPGW_ASSETS_URL . 'img/default_product_icon.png'
+				'type'        => 'text',
+				'default'     => PPGW_ASSETS_URL . 'img/default_product_icon.png'
 			),
 			'send_names' => array(
-				'title' => __('Send Product Names', 'wc-paddle-payment-gateway'),
+				'title'       => __('Send Product Names', 'wc-paddle-payment-gateway'),
 				'description' => __('Should the names of the product(s) in the cart be shown on the checkout?', 'wc-paddle-payment-gateway'),
-				'type' => 'checkbox',
-				'label' => __('Send Names', 'wc-paddle-payment-gateway'),
-				'default' => $this->enabled ? 'yes' : 'no'
+				'type'        => 'checkbox',
+				'label'       => __('Send Names', 'wc-paddle-payment-gateway'),
+				'default'     => $this->enabled ? 'yes' : 'no'
 			),
 			'vat_included_in_price' => array(
-				'title' => __('VAT Included In Price?', 'wc-paddle-payment-gateway'),
+				'title'       => __('VAT Included In Price?', 'wc-paddle-payment-gateway'),
 				'description' => __('This must match your Paddle account settings under VAT/Taxes', 'wc-paddle-payment-gateway'),
-				'type' => 'checkbox',
-				'label' => __('Prices Include VAT', 'wc-paddle-payment-gateway'),
-				'default' => 'yes'
+				'type'        => 'checkbox',
+				'label'       => __('Prices Include VAT', 'wc-paddle-payment-gateway'),
+				'default'     => 'yes'
 			)
 		);
 	}
@@ -346,12 +346,12 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 	 */
 	public function generate_raw_html($key, $data) {
 		$defaults = array(
-			'title' => '',
+			'title'    => '',
 			'disabled' => false,
-			'type' => 'raw',
-			'content' => '',
+			'type'     => 'raw',
+			'content'  => '',
 			'desc_tip' => false,
-			'label' => $this->plugin_id . $this->id . '_' . $key
+			'label'    => $this->plugin_id . $this->id . '_' . $key
 		);
 
 		$data = wp_parse_args($data, $defaults);
