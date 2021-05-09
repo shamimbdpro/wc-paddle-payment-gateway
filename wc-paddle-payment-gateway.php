@@ -15,7 +15,7 @@
  * Plugin Name:       Payment Gateway for Paddle on WooCommerce
  * Plugin URI:        https://divdojo.com/wc-paddle-payment-gateway
  * Description:       Paddle.com Payment Gateway Plugin for WooCommerce
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            DivDojo
  * Author URI:        https://divdojo.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PPGW_VERSION', '1.0.1' );
+define( 'PPGW_VERSION', '1.0.2' );
 
 /**
  * Define plugin path and plugin url.
