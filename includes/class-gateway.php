@@ -277,7 +277,7 @@ class Ppgw_Gateway extends WC_Payment_Gateway {
 				'type'        => 'checkbox',
 				'description' => __('This lets you test the paddle integration without spending actual money. Make sure you have an account in https://sandbox-vendors.paddle.com/', 'wc-paddle-payment-gateway'),
 				'label'       => __('Enable (After enabling/disabling this, You need to connect again in the vendor account section below.)', 'wc-paddle-payment-gateway'),
-				'default'     => $this->enabled_sandbox ? 'yes' : 'no'
+				'default'     => $this->enabled ? 'yes' : 'no'
 			),
 			'title' => array(
 				'title'       => __('Title', 'wc-paddle-payment-gateway'),
